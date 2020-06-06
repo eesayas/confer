@@ -1,9 +1,10 @@
 let peer = require('simple-peer');
-let socket = io();
+const video = document.getElementById('your-video');
 
 navigator.mediaDevices.getUserMedia({video: true, audio: true})
-
-.then(stream => {
+.then(stream => {  
+    video.srcObject = stream;
+    video.play();
     
 
 })

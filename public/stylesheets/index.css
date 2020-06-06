@@ -1,0 +1,45 @@
+html, body{
+    height: 100%;
+}
+
+.home-content-cont{
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.home-content{
+    width: 40%;
+    margin: auto;
+}
+
+.title-cont{
+    text-align: center;
+    margin: 2rem 0 5rem 0;
+}
+
+.home-content .title{
+    font-size: 5rem;
+    transition: 0.3s;
+}
+
+.home-content .subtitle{
+    font-style: italic;
+    opacity: 0.5;
+    text-align: center;
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.home-content  button{
+    display: block;
+    font-size: 1.5rem !important;
+    border-radius: 0.5rem;
+    margin: 1rem 0 !important;
+}
+
+.buttons-cont{
+    width: 80%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}

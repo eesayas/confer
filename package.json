@@ -2,7 +2,6 @@
   "name": "iseeya",
   "version": "0.0.0",
   "private": true,
-  "main": "main.js",
   "scripts": {
     "start": "nodemon app.js",
     "watch": "npx watchify main.js -o ./public/bundle.js"
@@ -18,6 +17,7 @@
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
+    "nodemon": "^2.0.4",
     "watchify": "^3.11.1"
   }
 }
