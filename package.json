@@ -4,7 +4,7 @@
   "private": true,
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node ./bin/www",
     "watch": "npx watchify main.js -o ./public/bundle.js"
   },
   "dependencies": {
