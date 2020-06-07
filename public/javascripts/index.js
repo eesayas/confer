@@ -51,5 +51,5 @@ $('#meeting-id-input').on('click', function(){
 $('.start-meeting-btn').on('click', function(){
     console.log('start meeting btn clicked');
 
-    location.href = `/${ $('#meeting-id-input').val() }`;
+    location.href = `/${ $('#meeting-id-input').val() }#init`;
 });

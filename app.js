@@ -12,11 +12,31 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 //socket.io connection setup
-io.on('connection', () => {
+io.on('connection', socket => {
 
+  //setup listeners from webrtc on frontend
+  socket.on('CreateHostPeer', makeHostPeer);
+  socket.on('SendHostData', sendHostData);
+  socket.on('SendNormalData', hostReceiveData);
 });
 server.listen(3000);
 
+//functions to be called by socket.io listeners
+
+//this will tell webrtc (in frontend) to make host peer
+function makeHostPeer(){
+  this.broadcast.emit('MakeHostPeer');
+}
+
+//this will tell webrtc to make another peer and to send host data to other
+function sendHostData(data){
+  this.broadcast.emit('MakeNormalPeer', data); //data is host's data
+}
+
+//host will receive data
+function hostReceiveData(data){
+  this.broadcast.emit('HostReceiveData', data); //data is normal's data
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
