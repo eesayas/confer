@@ -11,31 +11,28 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-//socket.io connection setup
 io.on('connection', socket => {
 
-  //setup listeners from webrtc on frontend
-  socket.on('CreateHostPeer', makeHostPeer);
-  socket.on('SendHostData', sendHostData);
-  socket.on('SendNormalData', hostReceiveData);
+  //setup socket io listeners
+  socket.on('RemoteJoined', alertInitiator);
+  socket.on('CallRemotePeer', makeRemotePeer);
+  socket.on('SendRemoteData', acceptRemotePeer);
 });
+
 server.listen(3000);
 
 //functions to be called by socket.io listeners
-
-//this will tell webrtc (in frontend) to make host peer
-function makeHostPeer(){
-  this.broadcast.emit('MakeHostPeer');
+function makeRemotePeer(data){
+  this.broadcast.emit('MakeRemotePeer', data);
 }
 
-//this will tell webrtc to make another peer and to send host data to other
-function sendHostData(data){
-  this.broadcast.emit('MakeNormalPeer', data); //data is host's data
+function acceptRemotePeer(data){
+  // console.log('accept');
+  this.broadcast.emit('AcceptRemotePeer', data);
 }
 
-//host will receive data
-function hostReceiveData(data){
-  this.broadcast.emit('HostReceiveData', data); //data is normal's data
+function alertInitiator(){
+  this.broadcast.emit('CreateMeeting');
 }
 
 // view engine setup

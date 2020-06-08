@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next) {
-  res.render('video', { title: 'Video Chat' });
+  res.render('video', { title: 'Video Chat in progress...' });
 });
 
 //service. creates meeeting id
