@@ -10,6 +10,7 @@ const usersRouter = require('./routes/users');
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+var port = process.env.PORT || 8080;
 
 io.on('connection', socket => {
 
@@ -19,7 +20,7 @@ io.on('connection', socket => {
   socket.on('SendRemoteData', acceptRemotePeer);
 });
 
-server.listen(3000);
+server.listen(port);
 
 //functions to be called by socket.io listeners
 function makeRemotePeer(data){
