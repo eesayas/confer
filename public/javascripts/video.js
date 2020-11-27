@@ -1,10 +1,11 @@
-const socket = io("/");
+const socket = io("http://localhost:3002/");
 const videoGrid = document.getElementById("video-grid");
 
 const myPeer = new Peer(undefined, {
     path: "/peerjs",
-    host: "/",
-    port: "3002"
+    host: "localhost", //name of website
+    port: 3002, //port
+    expire_timeout: 10000,
 });
 
 // my video, mute my own audio
