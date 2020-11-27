@@ -3,8 +3,9 @@ let Peer = require('simple-peer');
 let socket = io();
 const myVideo = document.getElementById('your-video');
 const remoteVideo = document.getElementById('other-video');
-let client = {};
 
+//ask the server, how many people are in the room
+socket.emit('How many are here?');
 
 navigator.mediaDevices.getUserMedia({video: true, audio: true})
 .then(stream => {  
@@ -12,77 +13,49 @@ navigator.mediaDevices.getUserMedia({video: true, audio: true})
     myVideo.srcObject = stream;
     myVideo.play();
 
-    //this will configure my peer
-    function myPeer(){
-        console.log('initiate');
+    //this func initializes a peer based on type
+    function myPeer(type){
+        let peer = new Peer({initiator: type, stream: stream, trickle: false});
+        console.log(`I am an initiator ${peer.initiator}`);
 
-        client.hasRemote = false;
-        //an initiator peer (you)
-        let peer = new Peer({ initiator: true, stream: stream, trickle: false });
-
-        //set the video of remote peer
+        //detect stream from others
         peer.on('stream', stream => {
-            remoteVideo.srcObject = stream; 
+            remoteVideo.srcObject = stream;
             remoteVideo.play();
-        });
+        }); 
 
-        //this sends my data to remote peer (will fire right away)
+        //send out my data to others
         peer.on('signal', data => {
-            if(!client.hasRemote) socket.emit('CallRemotePeer', data);
+            if(peer.initiator){ 
+                socket.emit('Share my data', data);
+            } else{
+                socket.emit('Send back data', data);
+            }
         });
 
-        //this receives data from remote peer
-        // socket.on('AcceptRemotePeer', data => {
-        //     peer.signal(data);
-        // });
-
-        client.peer = peer;
-    }
-
-    //this will receive data from remote peer
-    function receiveRemoteData(data){
-        client.hasRemote = true;
-        let peer = client.peer;
-        peer.signal(data);
-    }
-
-    //this will configure remote peer which will receive my data
-    function remotePeer(myData){
-        console.log('remote');
-        //a remote peer
-        let peer = new Peer({ initiator: false, stream: stream, trickle: false });
-
-        //set the video of remote peer
-        peer.on('stream', stream => {
-            remoteVideo.srcObject = stream; 
-            remoteVideo.play();
+        //receive data from others
+        socket.on('Receive data', data => {
+            peer.signal(data);
         });
 
-        //this will send back data to myPeer
-        peer.on('signal', data => {
-            socket.emit('SendRemoteData', data);
-        });
-
-        peer.signal(myData); //receive myData
-
-        client.peer = peer;
+        //receive back data from non-initiators
+        socket.on('Receive back data', data => {
+            if(peer.initiator){
+                peer.signal(data);
+                peer.initiator = false;
+            }
+        });     
     }
-    
-    //if someone entered the meeting via non init route, let server know
-    if(location.hash != '#init') socket.emit('RemoteJoined');
 
-    //when CreateMeeting starts supply initiator role depending on hash
-    socket.on('CreateMeeting', () => {
-        if(location.hash == '#init') myPeer();
-    });
+    //when you get the answer to question above
+    socket.on('We are this many...', total => {
+        console.log(`there are ${total} people in the room`);
+        if(total==1){ 
+            myPeer(true);
 
-    //when remote peer gets data from intitator, create its own peer
-    socket.on('MakeRemotePeer', data => {
-        remotePeer(data);
-    });
-
-    socket.on('AcceptRemotePeer', data => {
-        receiveRemoteData(data);
+        } else if(total > 1){ 
+            myPeer(false); 
+        }
     });
 })
 .catch(err => document.write(err));
