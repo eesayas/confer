@@ -1,55 +1,57 @@
-//CREATE A MEETING button clicked!
-$('.create-meeting-btn').on('click', function(){
-    console.log('create meet btn');
+var ROOM_ID = "";
 
-    $('.create-meeting-cont').show();
-    $('.home-buttons-cont').hide();
+// go to start-meeting menu
+$("#create-room").on("click", () => {
+    // hide start-menu
+    $("#start-menu").removeClass("d-flex").addClass("d-none");
 
-    $('.home-content .title').css("font-size", "4rem");
-    $('.title-cont').css('margin-bottom', '2rem');
+    // show start-meeting menu
+    $("#start-meeting").removeClass("d-none").addClass("d-flex");
 
-    $('.title-cont .subtitle').hide();
-
-    $.post('/create-meeting', function(data){
-        $('#meeting-id-input').val(data);
-    });
+    // send a post request to server to get room_id
+    $.post("/", 
+        // on success
+        (data) => {
+            // data.room_id;
+            $("#room-id-input").val(data.room_id);
+            ROOM_ID = data.room_id;
+        }
+    );
 });
 
-//CANCEL button clicked!
-$('.cancel-btn').on('click', function(){
-    console.log('cancel btn clicked');
+// cancel start meeting
+$("#cancel-start").on("click", () => {
+    // show start-menu again
+    $("#start-menu").removeClass("d-none").addClass("d-flex");
 
-    $('.home-buttons-cont').show();
-    $('.title-cont .subtitle').show();
-
-    //if create meeting btns are visible
-    if( $('.create-meeting-cont').is(':visible')){
-        $('.create-meeting-cont').hide();
-    }
-
-    $('.home-content .title').css("font-size", "5rem");
-    $('.title-cont').css('margin-bottom', '5rem');
+    // hide start-meeting menu
+    $("#start-meeting").removeClass("d-flex").addClass("d-none");
 });
 
+// go to join-meeting menu
+$("#join-room").on("click", () => {
+    // hide start-menu
+    $("#start-menu").removeClass("d-flex").addClass("d-none");
 
-//meeting id input clicked => copy id to clipboard!
-$('#meeting-id-input').on('click', function(){
-
-    let meetingId = document.getElementById('meeting-id-input');
-
-    meetingId.select();
-    meetingId.setSelectionRange(0, 99999); //for mobile devices
-
-    document.execCommand('copy');
-
-    $('.note').text('Copied to clipboard!');
-
-    console.log(`copied id: ${ meetingId.value }`);
+    // show join-meeting-menu
+    $("#join-meeting").removeClass("d-none").addClass("d-flex");
 });
 
-//START MEETING button clicked
-$('.start-meeting-btn').on('click', function(){
-    console.log('start meeting btn clicked');
+// cancel join meeting
+$("#cancel-join").on("click", () => {
+    // show start-menu again
+    $("#start-menu").removeClass("d-none").addClass("d-flex");
 
-    location.href = `/${ $('#meeting-id-input').val() }#init`;
+    // hide start-meeting menu
+    $("#join-meeting").removeClass("d-flex").addClass("d-none");
+});
+
+// start meeting
+$("#start-meet").on("click", () => {
+    if(ROOM_ID.length) window.location.href = `/${ROOM_ID}`
+});
+
+// join meeting
+$("#join-meet").on("click", () => {
+    if( $("#join-room-input").val().length ) window.location.href = `/${$("#join-room-input").val()}`
 });

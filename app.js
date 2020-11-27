@@ -3,38 +3,23 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const engine = require("ejs-mate");
+const { ExpressPeerServer } = require("peer");
 
+
+// require routers
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io')(server);
-var port = process.env.PORT || 8080;
+const io = require("socket.io")(server);
+const port = process.env.PORT || 3002;
 
-io.on('connection', socket => {
-
-  //setup socket io listeners
-  socket.on('RemoteJoined', alertInitiator);
-  socket.on('CallRemotePeer', makeRemotePeer);
-  socket.on('SendRemoteData', acceptRemotePeer);
+const peerServer = ExpressPeerServer(server, {
+  debug: true,
 });
 
-server.listen(port);
-
-//functions to be called by socket.io listeners
-function makeRemotePeer(data){
-  this.broadcast.emit('MakeRemotePeer', data);
-}
-
-function acceptRemotePeer(data){
-  // console.log('accept');
-  this.broadcast.emit('AcceptRemotePeer', data);
-}
-
-function alertInitiator(){
-  this.broadcast.emit('CreateMeeting');
-}
+app.engine("ejs", engine);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -46,8 +31,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// mount routes
+app.use("/peerjs", peerServer);
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -65,5 +52,20 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+// config socket.io
+io.on("connection", socket => {
+  
+  socket.on("join-room", (room_id, user_id) => {
+    socket.join(room_id);
+    // upon entry
+    socket.to(room_id).broadcast.emit("user-connected", user_id);
+    
+    // upon disconnect
+    // socket.on("disconnect", () => {
+    //   socket.to(room_id).broadcast.emit("user-disconnected", user_id);
+    // });
+  });
+});
 
+server.listen(port, () => console.log("iSeeYa server running..."));
+module.exports = app;
