@@ -30,6 +30,7 @@ navigator.mediaDevices.getUserMedia({
 
     // on new user enter room send my stream to them
     socket.on("user-connected", user_id => {
+        console.log(user_id);
         connectToNewUser(user_id, stream);
     }); 
 });
