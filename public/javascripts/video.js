@@ -1,11 +1,15 @@
-const socket = io("http://localhost:3002/");
+const socket = io("https://iseeya.eesayas.com/");
 const videoGrid = document.getElementById("video-grid");
 
 const myPeer = new Peer(undefined, {
     path: "/peerjs",
-    host: "localhost", //name of website
-    port: 3002, //port
+    host: "iseeya.eesayas.com", //name of website
+    port: 443, //port
     expire_timeout: 10000,
+    config: {"iceServers": [
+        { url: "stun:stun.eesayas.com:5349" },
+        { url: "turn:turn.eesayas.com:3478?transport=tcp", username:"iseeya", credential: "04301998" }
+    ]}
 });
 
 // my video, mute my own audio
