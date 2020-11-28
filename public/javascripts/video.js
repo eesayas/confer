@@ -13,7 +13,7 @@ const myVideo = document.createElement("video");
 myVideo.muted = true;
 
 const peers = {};
-
+const share = navigator.mediaDevices.getDisplayMedia();
 navigator.mediaDevices.getUserMedia({
     video: true, audio: true
 }).then(stream => {
