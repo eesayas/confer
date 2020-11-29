@@ -54,7 +54,7 @@ myPeer.on("open", id => {
 
 socket.on("user-disconnected", user_id => {
     if(myPeer.connections[user_id]){
-        videos.find( video => video.srcObject.id === myPeer.connections[user_id][0].remoteStream.id).remove();
+        if(myPeer.connections[user_id][0].remoteStream) videos.find( video => video.srcObject.id === myPeer.connections[user_id][0].remoteStream.id).remove();
         myPeer.connections[user_id][0].close();
     }
 });
