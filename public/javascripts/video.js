@@ -2,6 +2,7 @@ const socket = io("https://iseeya.eesayas.com/");
 const videoGrid = document.getElementById("video-grid");
 
 const myPeer = new Peer(undefined, {
+    secure: SECURE,
     path: "/peerjs",
     host: HOST, //name of website
     port: PORT, //port
@@ -9,7 +10,8 @@ const myPeer = new Peer(undefined, {
     config: {"iceServers": [
         { url: "stun:stun.eesayas.com:5349" },
         { url: "turn:turn.eesayas.com:3478?transport=tcp", username:"iseeya", credential: "04301998" }
-    ]}
+    ]},
+    debug: true,
 });
 
 // my video, mute my own audio
@@ -34,7 +36,6 @@ navigator.mediaDevices.getUserMedia({
 
     // on new user enter room send my stream to them
     socket.on("user-connected", user_id => {
-        console.log(user_id);
         connectToNewUser(user_id, stream);
     }); 
 });
@@ -80,3 +81,7 @@ addVideoStream = (video, stream) => {
         $("#video-grid").css("grid-template-columns", "1fr 1fr");
     }
 }
+
+myPeer.on("error", (err) => {
+    console.log(err);
+});

@@ -34,7 +34,8 @@ router.get('/:room_id', function(req, res, next) {
       video: true, 
       room_id: req.params.room_id,
       port: process.env.PEERJS_PORT,
-      host: process.env.HOST
+      host: process.env.HOST,
+      secure: process.env.SECURE
     });
 });
 
