@@ -7,11 +7,13 @@ On root create `.env` file with the following content...
 ```
 # development
 HOST=localhost
+PEERJS_PORT=3000
 PORT=3000
 
 # deploy
 HOST=domain.com
-PORT=443
+PEERJS_PORT=443
+PORT=3000
 ```
 
 ## Setup STUN/SERVER server with coturn

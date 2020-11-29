@@ -33,7 +33,7 @@ router.get('/:room_id', function(req, res, next) {
     { title: 'Video chat in progress...', 
       video: true, 
       room_id: req.params.room_id,
-      port: process.env.PORT,
+      port: process.env.PEERJS_PORT,
       host: process.env.HOST
     });
 });
