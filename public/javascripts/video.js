@@ -1,12 +1,13 @@
 const socket = io("https://iseeya.eesayas.com/");
 const videoGrid = document.getElementById("video-grid");
 
+let videos = [];
+
 const myPeer = new Peer(undefined, {
     secure: SECURE,
     path: "/peerjs",
     host: HOST, //name of website
     port: PORT, //port
-    expire_timeout: 60000,
     config: {"iceServers": [
         { url: "stun:stun.eesayas.com:5349" },
         { url: "turn:turn.eesayas.com:3478?transport=tcp", username:"iseeya", credential: "04301998" }
@@ -31,35 +32,31 @@ navigator.mediaDevices.getUserMedia({
 
     // on call to peers
     myPeer.on("call", call => {
-        console.log("send my stream");
-	call.answer(stream);
+	    call.answer(stream);
         const video = document.createElement("video");
+        
         call.on("stream", (userVideoStream) => {
-           console.log(userVideoStream);
-		addVideoStream(video, userVideoStream);
+            console.log(userVideoStream + "hey");
+		    addVideoStream(video, userVideoStream);
         });
-
-	
     });
 
     // on new user enter room send my stream to them
     socket.on("user-connected", user_id => {
-	console.log(user_id);
+        console.log(user_id);
         connectToNewUser(user_id, stream);
     }); 
 });
 
 myPeer.on("open", id => {
-     console.log("make the call: " + id);
-     socket.emit("join-room", ROOM_ID, id);
+    socket.emit("join-room", ROOM_ID, id);
 });
 
 socket.on("user-disconnected", user_id => {
-   console.log("user-disconnected");
-   if(peers[user_id]) {
-	peers[user_id].close();
-	delete peers[user_id];
-   }
+    if(myPeer.connections[user_id]){
+        videos.find( video => video.srcObject.id === myPeer.connections[user_id][0].remoteStream.id).remove();
+        myPeer.connections[user_id][0].close();
+    }
 });
 
 // connect to new user
@@ -70,14 +67,14 @@ connectToNewUser = (user_id, stream) => {
 
     // on receiving stream
     call.on("stream", (userVideoStream) => {
-	console.log(userVideoStream);
+	    console.log(userVideoStream);
         addVideoStream(video, userVideoStream);
     });
 
     // when call is closed
     call.on("close", () => {
         console.log("end call");
-	video.remove();
+	    video.remove();
     });
 
     // add to peers
@@ -93,6 +90,7 @@ addVideoStream = (video, stream) => {
 
     // add element to grid
     videoGrid.append(video);
+    videos.push(video);
     if( $("video").length > 1){
         $("#video-grid").css("grid-template-columns", "1fr 1fr");
     }

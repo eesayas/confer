@@ -17,7 +17,7 @@ const io = require("socket.io")(server);
 const port = process.env.PORT || 3002;
 
 const peerServer = ExpressPeerServer(server, {
-  debug: true,
+  debug: 2,
 });
 
 app.engine("ejs", engine);
