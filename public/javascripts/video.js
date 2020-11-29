@@ -5,7 +5,7 @@ const myPeer = new Peer(undefined, {
     path: "/peerjs",
     host: HOST, //name of website
     port: PORT, //port
-    expire_timeout: 10000,
+    expire_timeout: 60000,
     config: {"iceServers": [
         { url: "stun:stun.eesayas.com:5349" },
         { url: "turn:turn.eesayas.com:3478?transport=tcp", username:"iseeya", credential: "04301998" }
@@ -76,4 +76,7 @@ addVideoStream = (video, stream) => {
 
     // add element to grid
     videoGrid.append(video);
+    if( $("video").length > 1){
+        $("#video-grid").css("grid-template-columns", "1fr 1fr");
+    }
 }
