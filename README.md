@@ -1,6 +1,19 @@
 # iseeya
 A simple video conferencing app that uses [PeerJS](https://peerjs.com/) and [WebRTC](https://webrtc.org/)
 
+## Setup env variables
+On root create `.env` file with the following content...
+
+```
+# development
+HOST=localhost
+PORT=3000
+
+# deploy
+HOST=domain.com
+PORT=443
+```
+
 ## Setup STUN/SERVER server with coturn
 In Ubuntu 18.04 server terminal,
 ```

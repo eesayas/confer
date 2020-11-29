@@ -29,7 +29,13 @@ router.post("/", (req, res) => {
 @desc   This will render the view for video
 */
 router.get('/:room_id', function(req, res, next) {
-  res.render('video', { title: 'Video chat in progress...', video: true, room_id: req.params.room_id });
+  res.render('video', 
+    { title: 'Video chat in progress...', 
+      video: true, 
+      room_id: req.params.room_id,
+      port: process.env.PORT,
+      host: process.env.HOST
+    });
 });
 
 module.exports = router;

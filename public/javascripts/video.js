@@ -3,8 +3,8 @@ const videoGrid = document.getElementById("video-grid");
 
 const myPeer = new Peer(undefined, {
     path: "/peerjs",
-    host: "iseeya.eesayas.com", //name of website
-    port: 443, //port
+    host: HOST, //name of website
+    port: PORT, //port
     expire_timeout: 10000,
     config: {"iceServers": [
         { url: "stun:stun.eesayas.com:5349" },
@@ -17,7 +17,6 @@ const myVideo = document.createElement("video");
 myVideo.muted = true;
 
 const peers = {};
-const share = navigator.mediaDevices.getDisplayMedia();
 navigator.mediaDevices.getUserMedia({
     video: true, audio: true
 }).then(stream => {
