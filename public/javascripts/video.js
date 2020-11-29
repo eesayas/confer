@@ -11,7 +11,7 @@ const myPeer = new Peer(undefined, {
         { url: "stun:stun.eesayas.com:5349" },
         { url: "turn:turn.eesayas.com:3478?transport=tcp", username:"iseeya", credential: "04301998" }
     ]},
-    debug: true,
+    debug: 2,
 });
 
 // my video, mute my own audio
@@ -19,6 +19,10 @@ const myVideo = document.createElement("video");
 myVideo.muted = true;
 
 const peers = {};
+
+// define camera over multiple browers
+const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
 navigator.mediaDevices.getUserMedia({
     video: true, audio: true
 }).then(stream => {
@@ -27,25 +31,35 @@ navigator.mediaDevices.getUserMedia({
 
     // on call to peers
     myPeer.on("call", call => {
-        call.answer(stream);
+        console.log("send my stream");
+	call.answer(stream);
         const video = document.createElement("video");
-        call.on("stream", userVideoStream => {
-            addVideoStream(video, userVideoStream);
+        call.on("stream", (userVideoStream) => {
+           console.log(userVideoStream);
+		addVideoStream(video, userVideoStream);
         });
+
+	
     });
 
     // on new user enter room send my stream to them
     socket.on("user-connected", user_id => {
+	console.log(user_id);
         connectToNewUser(user_id, stream);
     }); 
 });
 
 myPeer.on("open", id => {
-    socket.emit("join-room", ROOM_ID, id);
+     console.log("make the call: " + id);
+     socket.emit("join-room", ROOM_ID, id);
 });
 
 socket.on("user-disconnected", user_id => {
-    if(peers[user_id]) peers[user_id].close();
+   console.log("user-disconnected");
+   if(peers[user_id]) {
+	peers[user_id].close();
+	delete peers[user_id];
+   }
 });
 
 // connect to new user
@@ -56,12 +70,14 @@ connectToNewUser = (user_id, stream) => {
 
     // on receiving stream
     call.on("stream", (userVideoStream) => {
+	console.log(userVideoStream);
         addVideoStream(video, userVideoStream);
     });
 
     // when call is closed
     call.on("close", () => {
-        video.remove();
+        console.log("end call");
+	video.remove();
     });
 
     // add to peers

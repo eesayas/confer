@@ -62,9 +62,9 @@ io.on("connection", socket => {
     socket.to(room_id).broadcast.emit("user-connected", user_id);
     
     // upon disconnect
-    // socket.on("disconnect", () => {
-    //   socket.to(room_id).broadcast.emit("user-disconnected", user_id);
-    // });
+    socket.on("disconnect", () => {
+       socket.to(room_id).broadcast.emit("user-disconnected", user_id);
+    });
   });
 });
 
