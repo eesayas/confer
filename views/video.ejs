@@ -1,21 +1,48 @@
 <% layout ("boilerplate") -%>
 
 <style>
-    #video-grid{
+    /* #video-grid{
         display: grid;
         grid-template-columns: 1fr;
-        /* grid-auto-rows: 300px; */
+        height: 100%;
+        height: 20%;
+        width: 100%;
+        display: flex;
+    } */
+
+    .videos-gallery{
+        display: grid;
+        grid-template-columns: 1fr;
+        height: 100%;
+    }
+
+    .videos-speaker{
+        height: 20%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .videos-speaker > video {
+        width: auto !important;
+    }
+
+    #videos-cont{
         background-color: black;
     }
 
     video{
-        width: 100%;
-        height: 80%;
         border: 1px solid white;
-        /* background-color: #181818; */
         box-sizing: border-box;
         margin: auto 0;
         object-fit: contain;
+        height: 100%;
+        width: 100%;
+    }
+
+    #speaker{
+        height: 80%;
+        border: 1px solid white;
     }
 
     .circle-btn{
@@ -25,19 +52,54 @@
         border-radius: 50%;
         cursor: pointer;
     }
+
+    .screen-share{
+        height: 100% !important;
+        border: none !important;
+    }
 </style>
 
 
-<nav class="navbar navbar-light text-light" style="background-color: #535252;">
+<nav class="navbar navbar-light text-light user-select-none" style="background-color: #535252;">
     <a class="navbar-brand text-light mx-3 lead" style="font-size: 2rem; letter-spacing: 0.2rem;" role="logo">iSeeYa</a>
+    <div class="material-icons" role="button" style="font-size: 2rem;" id="view-toggle">grid_on</div>
 </nav>
 
-<div id="video-grid"></div>
+<div id="videos-cont">
+    <div id="video-grid"></div>
+    <div id="speaker">
+        <video id="spotlight" class="border border-success">
+
+        </video>
+    </div>
+</div>
 
 <nav class="navbar d-flex fixed-bottom navbar-light text-light" style="background-color: #535252;" id="video-controls">
+    <div class="d-flex">
+        <div class="material-icons circle-btn" style="color: #535252" onclick="shareScreen()">screen_share</div>
+    </div>
     <div class="material-icons circle-btn mx-auto" id="end-call-btn" style="transform: rotate(135deg); background-color: #e10000 !important; color: white;" role="button">phone</div>
+    <div class="d-flex">
+        <div class="material-icons circle-btn" style="color: #535252">screen_share</div>
+    </div>
 </nav>
 
 <script>
-    $("#video-grid").height( $("#video-controls").offset().top - $("#video-grid").offset().top );
+    $("#video-grid").addClass("videos-gallery");
+
+    $("#videos-cont").height( $("#video-controls").offset().top - $("#videos-cont").offset().top );
+
+    $("#view-toggle").on("click", function(){
+        let viewText = $(this).text();
+        if(viewText === "portrait"){
+            $(this).text("grid_on");
+            $("#video-grid").removeClass("videos-speaker").addClass("videos-gallery");
+        } else if(viewText === "grid_on"){
+            $(this).text("portrait");
+            $("#video-grid").removeClass("videos-gallery").addClass("videos-speaker");
+        }
+    });
+
 </script>
+
+<script src="/javascripts/video.js" defer></script>
