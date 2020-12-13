@@ -60,7 +60,6 @@ navigator.mediaDevices.getUserMedia({
             if(call.metadata && call.metadata.shareScreen == true){
                 console.log(call.metadata);
                 video = document.getElementById("spotlight");
-                video.muted = true;
                 video.srcObject = userVideoStream;
                 video.addEventListener("loadedmetadata", () => {
                     video.play();
