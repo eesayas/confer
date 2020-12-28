@@ -31,6 +31,8 @@ const shareScreen = () => {
         const video = document.getElementById("spotlight");
         video.muted = true;
         video.srcObject = stream;
+        video.setAttribute("autoplay", true);
+        video.setAttribute("playsInline", true);
         video.addEventListener("loadedmetadata", () => {
             video.play();
         });
