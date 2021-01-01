@@ -33,6 +33,9 @@ router.get('/:room_id', function(req, res, next) {
     { title: 'Video chat in progress...', 
       video: true, 
       room_id: req.params.room_id,
+      turn_user: process.env.TURN_USER,
+      turn_pass: process.env.TURN_PASS,
+
       port: process.env.PEERJS_PORT,
       host: process.env.HOST,
       secure: process.env.SECURE

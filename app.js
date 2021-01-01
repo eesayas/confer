@@ -53,10 +53,48 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// will use db later
+const rooms = {};
+
 // config socket.io
 io.on("connection", socket => {
-  
+
+  // upon receiving "join room", add socket.id to room
+  socket.on("join room", (room_id) => {
+    // join room
+    socket.join(room_id);
+
+    if(rooms[room_id]){
+      rooms[room_id].push(socket.id);
+    } else{
+      rooms[room_id] = [socket.id];
+    }
+
+    // get other users in the room
+    const others = rooms[room_id].filter(id => id !== socket.id);
+
+    // if there are other people in the room 
+    if(others.length){
+      // send "user joined" with the socket.id of the joiner which is me
+      // DEV NOTE: others will call me once they receive my socket.id
+      socket.to(room_id).broadcast.emit("user joined", socket.id);
+    }
+  });
+
+  // upon receiving "offer" emit payload to target
+  socket.on("offer", payload => {
+    io.to(payload.target).emit("offer", payload);
+  });
+
+  // upon receiving "answer" emit answer payload to target
+  socket.on("answer", payload => {
+    io.to(payload.target).emit("answer", payload);
+  });
+
+
   socket.on("join-room", (room_id, user_id) => {
+
+    // join a room
     socket.join(room_id);
     // upon entry
     socket.to(room_id).broadcast.emit("user-connected", user_id);
