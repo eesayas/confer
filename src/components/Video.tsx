@@ -2,6 +2,7 @@ import { useEffect, useRef } from "preact/hooks";
 
 interface Props {
   stream: MediaStream;
+  muted?: boolean;
 }
 
 export const Video = (props: Props) => {
@@ -19,25 +20,16 @@ export const Video = (props: Props) => {
   }, [props.stream]);
 
   return (
-    <div
+    <video
+      ref={videoRef}
+      autoplay
+      playsInline
+      muted={props.muted}
       style={{
-        overflow: "hidden",
-        borderRadius: "20px",
-        border: "1px solid red",
+        borderRadius: "10px",
+        backgroundColor: "#333",
+        flex: "1 1 30%",
       }}
-    >
-      <video
-        ref={videoRef}
-        autoplay
-        playsInline
-        muted
-        style={{
-          width: "100%",
-          height: "100%",
-          margin: 0,
-          display: "block",
-        }}
-      ></video>
-    </div>
+    ></video>
   );
 };

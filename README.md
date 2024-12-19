@@ -1,4 +1,4 @@
-# `CallMe`
+# `Confer.`
 
 **Tech Stack**: WebRTC, WebSocket, Deno, Preact (React), Typescript (Javascript)
 

@@ -8,6 +8,7 @@ import { waitUntil } from "../utils";
 import { Peer, PeerManager } from "../peer";
 import { AudioButton } from "../components/buttons/AudioButton";
 import { VideoButton } from "../components/buttons/VideoButton";
+import { EndCallButton } from "../components/buttons/EndCallButton";
 
 export const Meeting = () => {
   const [stream, setStream] = useState<MediaStream>();
@@ -20,8 +21,8 @@ export const Meeting = () => {
     setPeers(peerManager.peers);
   });
 
+  const media = new MediaManager();
   const setupStream = () => {
-    const media = new MediaManager();
     waitUntil(() => media.ready).then(() => {
       setStream(media.stream);
     });
@@ -51,7 +52,7 @@ export const Meeting = () => {
     };
   }, []);
 
-  const goBack = () => {
+  const leaveCall = () => {
     route("/");
     window.location.reload();
   };
@@ -68,11 +69,16 @@ export const Meeting = () => {
         style={{
           display: "flex",
           flexWrap: "wrap",
-          padding: "0 2px",
-          gap: "2px",
+          gap: "10px",
+          width: "90%",
+          margin: "auto",
+          height: "100%",
+          justifyItems: "center",
+          alignItems: "center",
         }}
       >
-        <Video stream={stream}></Video>
+        <Video stream={stream} muted></Video>
+
         {peers.map((peer, index) => (
           <PeerVideo key={index} peer={peer} />
         ))}
@@ -88,8 +94,9 @@ export const Meeting = () => {
           gap: 10,
         }}
       >
-        <AudioButton />
-        <VideoButton />
+        <AudioButton onClick={media.toggleAudio} />
+        <VideoButton onClick={media.toggleVideo} />
+        <EndCallButton onClick={leaveCall} />
       </div>
     </div>
   );

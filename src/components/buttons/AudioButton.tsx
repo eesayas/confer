@@ -3,10 +3,15 @@ import { AudioOnIcon } from "../icons/AudioOnIcon";
 import { AudioOffIcon } from "../icons/AudioOffIcon";
 import { useState } from "preact/hooks";
 
-export const AudioButton = () => {
+interface Props {
+  onClick?: () => void;
+}
+
+export const AudioButton = (props: Props) => {
   const [enabled, setEnabled] = useState<boolean>(true);
   const toggle = () => {
     setEnabled(!enabled);
+    props.onClick();
   };
 
   return (

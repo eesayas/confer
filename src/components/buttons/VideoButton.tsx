@@ -3,10 +3,15 @@ import { VideoOffIcon } from "../icons/VideoOffIcon";
 import { VideoOnIcon } from "../icons/VideoOnIcon";
 import { useState } from "preact/hooks";
 
-export const VideoButton = () => {
+interface Props {
+  onClick?: () => void;
+}
+
+export const VideoButton = (props: Props) => {
   const [enabled, setEnabled] = useState<boolean>(true);
   const toggle = () => {
     setEnabled(!enabled);
+    props.onClick();
   };
 
   return (

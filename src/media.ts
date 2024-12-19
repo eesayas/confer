@@ -31,4 +31,14 @@ export class MediaManager {
   get ready() {
     return this.#ready;
   }
+
+  toggleVideo = () => {
+    const [video] = this.#stream.getVideoTracks();
+    video.enabled = !video.enabled;
+  };
+
+  toggleAudio = () => {
+    const [audio] = this.#stream.getAudioTracks();
+    audio.enabled = !audio.enabled;
+  };
 }
