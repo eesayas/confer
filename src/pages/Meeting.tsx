@@ -63,18 +63,22 @@ export const Meeting = () => {
         position: "relative",
         height: "100vh",
         width: "100%",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <div
         style={{
           display: "flex",
           flexWrap: "wrap",
-          gap: "10px",
-          width: "90%",
           margin: "auto",
-          height: "100%",
-          justifyItems: "center",
-          alignItems: "center",
+          justifyContent: "center",
+          alignItems: "stretch",
+          gap: "10px",
+          flexGrow: 1,
+          width: "100%",
+          boxSizing: "border-box",
+          padding: 10,
         }}
       >
         <Video stream={stream} muted></Video>
@@ -86,12 +90,12 @@ export const Meeting = () => {
 
       <div
         style={{
-          position: "absolute",
-          bottom: 10,
           width: "100%",
           justifyContent: "center",
           display: "flex",
           gap: 10,
+          padding: 10,
+          boxSizing: "border-box",
         }}
       >
         <AudioButton onClick={media.toggleAudio} />

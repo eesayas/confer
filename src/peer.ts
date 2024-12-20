@@ -2,7 +2,16 @@ import { MediaManager } from "./media";
 import { Socket } from "./socket";
 import { EventHandler, waitUntil } from "./utils";
 
-const config = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
+const config: RTCConfiguration = {
+  iceServers: [
+    { urls: "stun:stun.classie.ca:5349" },
+    {
+      urls: "turn:turn.classie.ca:3478?transport=tcp",
+      username: "confer",
+      credential: "conference",
+    },
+  ],
+};
 const socket = new Socket();
 
 interface RTCPayload {
@@ -82,6 +91,7 @@ export class Peer extends EventHandler {
 
     // Listen for local ICE
     this.#pc.addEventListener("icecandidate", ({ candidate }) => {
+      console.log("local ice candidate");
       if (candidate) {
         this.#socket.send("ICE", {
           id: this.id,
@@ -92,6 +102,7 @@ export class Peer extends EventHandler {
 
     // Listen for remote ICE
     this.#socket.on("ICE", async (data: ICEPayload) => {
+      console.log("remote ice candidate", data);
       if (data.id === this.id) {
         try {
           await this.#pc.addIceCandidate(data.ice);
@@ -102,8 +113,9 @@ export class Peer extends EventHandler {
     });
 
     this.#pc.addEventListener("connectionstatechange", (event) => {
+      console.log("connection", event, this.#pc.connectionState);
       if (this.#pc.connectionState === "connected") {
-        console.debug("Peer connection successful:", this.id);
+        console.log("Peer connection successful:", this.id);
       }
     });
 
@@ -118,6 +130,8 @@ export class Peer extends EventHandler {
 
     const answer = await this.#pc.createAnswer();
     this.#pc.setLocalDescription(answer);
+
+    console.log("complete!");
 
     this.#socket.send("ANSWER", {
       id: this.id,

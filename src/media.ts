@@ -8,7 +8,6 @@ export class MediaManager {
       return MediaManager.#instance;
     }
     MediaManager.#instance = this;
-
     this.#setup();
   }
 
@@ -20,7 +19,7 @@ export class MediaManager {
       });
       this.#ready = true;
     } catch (err) {
-      throw Error("problem with getting local video & audio");
+      console.error(err);
     }
   }
 

@@ -41,6 +41,7 @@ export const Home = () => {
           padding: "10px",
           outiline: "none",
           width: "300px",
+          textAlign: "center",
         }}
       />
       <p
@@ -59,8 +60,12 @@ export const Home = () => {
         style={{
           fontSize: "1rem",
           fontWeight: 100,
-          padding: "5px 20px",
+          padding: "10px 30px",
           cursor: "pointer",
+          background: "#504F4F",
+          color: "#FFF",
+          border: "none",
+          borderRadius: "10px",
         }}
       >
         JOIN MEETING
@@ -68,7 +73,14 @@ export const Home = () => {
 
       <br />
       <p style={{ fontWeight: 100, fontSize: "0.9rem" }}>
-        Created by <a href="#">isaiasbriones</a>
+        Created by{" "}
+        <a
+          href="https://isaiasbriones.com/"
+          target="_blank"
+          style={{ color: "white" }}
+        >
+          isaiasbriones
+        </a>
       </p>
     </div>
   );

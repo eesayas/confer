@@ -1,0 +1,25 @@
+html,
+body {
+  font-family: "Roboto", serif;
+  background-color: #272626;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  color: white;
+}
+
+.video-container {
+  flex: 0 1 100%;
+  background-color: #333;
+  display: flex;
+  justify-content: center;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+@media only screen and (min-width: 600px) {
+  .video-container {
+    flex: 0 1 calc(50% - 20px);
+  }
+}

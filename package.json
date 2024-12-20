@@ -2,9 +2,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"vite\" \"deno task -c ./server/deno.json dev\"",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "deno task -c ./server/deno.json start"
   },
   "dependencies": {
     "preact": "^10.22.1",
@@ -12,6 +13,7 @@
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.9.0",
+    "concurrently": "^9.1.0",
     "eslint": "^8.57.1",
     "eslint-config-preact": "^1.5.0",
     "typescript": "^5.7.2",

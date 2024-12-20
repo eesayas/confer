@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 
 interface Props {
   stream: MediaStream;
@@ -16,20 +16,25 @@ export const Video = (props: Props) => {
 
   // Set video/audio once stream is available
   useEffect(() => {
-    props.stream && attachVideo();
+    setTimeout(() => {
+      props.stream && attachVideo();
+    }, 500);
   }, [props.stream]);
 
   return (
-    <video
-      ref={videoRef}
-      autoplay
-      playsInline
-      muted={props.muted}
-      style={{
-        borderRadius: "10px",
-        backgroundColor: "#333",
-        flex: "1 1 30%",
-      }}
-    ></video>
+    <div class="video-container">
+      <video
+        ref={videoRef}
+        autoplay
+        playsInline
+        muted={props.muted}
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          objectFit: "cover",
+        }}
+      ></video>
+    </div>
   );
 };
