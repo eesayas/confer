@@ -18,6 +18,31 @@ body {
   position: relative;
 }
 
+button {
+  filter: brightness(1);
+  transition: filter 1s ease;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  background: #504f4f;
+}
+
+button:hover {
+  filter: brightness(1.5);
+}
+
+button.text-button {
+  font-size: 1rem;
+  font-weight: 100;
+  padding: 10px 30px;
+}
+
+button.icon-button {
+  width: 50px;
+  height: 50px;
+}
+
 @media only screen and (min-width: 600px) {
   .video-container {
     flex: 0 1 calc(50% - 20px);

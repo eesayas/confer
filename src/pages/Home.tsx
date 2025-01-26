@@ -1,5 +1,6 @@
 import { useLocation } from "preact-iso";
 import { useState } from "preact/hooks";
+import { TextButton } from "../components/buttons/TextButton";
 
 const generateRandom10Digit = (): string => {
   return `${Math.floor(Math.random() * 9000000000) + 1000000000}`;
@@ -55,21 +56,8 @@ export const Home = () => {
         Update and/or Share the meeting ID above!
       </p>
       <br />
-      <button
-        onClick={join}
-        style={{
-          fontSize: "1rem",
-          fontWeight: 100,
-          padding: "10px 30px",
-          cursor: "pointer",
-          background: "#504F4F",
-          color: "#FFF",
-          border: "none",
-          borderRadius: "10px",
-        }}
-      >
-        JOIN MEETING
-      </button>
+
+      <TextButton onClick={join}>JOIN MEETING</TextButton>
 
       <br />
       <p style={{ fontWeight: 100, fontSize: "0.9rem" }}>

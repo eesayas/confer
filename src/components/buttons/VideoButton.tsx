@@ -1,4 +1,4 @@
-import { Button } from "./Button";
+import { IconButton } from "./IconButton";
 import { VideoOffIcon } from "../icons/VideoOffIcon";
 import { VideoOnIcon } from "../icons/VideoOnIcon";
 import { useState } from "preact/hooks";
@@ -15,8 +15,8 @@ export const VideoButton = (props: Props) => {
   };
 
   return (
-    <Button onClick={toggle}>
+    <IconButton onClick={toggle}>
       {enabled ? <VideoOnIcon /> : <VideoOffIcon />}
-    </Button>
+    </IconButton>
   );
 };

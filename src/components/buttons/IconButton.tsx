@@ -7,21 +7,17 @@ interface Props {
   textColor?: string;
 }
 
-export const Button = (props: Props) => {
+export const IconButton = (props: Props) => {
   const bgColor = props.bgColor ?? "#D9D9D9";
   const textColor = props.textColor ?? "#000";
 
   return (
     <button
       onClick={props.onClick}
+      class="icon-button"
       style={{
-        cursor: "pointer",
         backgroundColor: bgColor,
         color: textColor,
-        width: "50px",
-        height: "50px",
-        borderRadius: "10px",
-        border: "none",
       }}
     >
       {props.children}

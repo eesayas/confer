@@ -53,7 +53,8 @@ export const Meeting = () => {
   }, []);
 
   const leaveCall = () => {
-    route("/");
+    const room = path.slice(1);
+    route(`/exit/${room}`);
     window.location.reload();
   };
 

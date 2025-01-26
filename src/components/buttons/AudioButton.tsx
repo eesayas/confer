@@ -1,4 +1,4 @@
-import { Button } from "./Button";
+import { IconButton } from "./IconButton";
 import { AudioOnIcon } from "../icons/AudioOnIcon";
 import { AudioOffIcon } from "../icons/AudioOffIcon";
 import { useState } from "preact/hooks";
@@ -15,8 +15,8 @@ export const AudioButton = (props: Props) => {
   };
 
   return (
-    <Button onClick={toggle}>
+    <IconButton onClick={toggle}>
       {enabled ? <AudioOnIcon /> : <AudioOffIcon />}
-    </Button>
+    </IconButton>
   );
 };
